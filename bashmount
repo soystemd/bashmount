@@ -47,7 +47,7 @@ unset GREP_OPTIONS
 # Set defaults.
 declare udisks="auto"
 declare mount_options=""
-declare -i show_internal=1
+declare -i show_internal=0
 declare -i show_removable=1
 declare -i show_optical=1
 declare -i show_commands=1
@@ -156,8 +156,8 @@ print_commands() {
     printf '%s' "        ${BLUE}o${ALL_OFF}: open"
     printf '%s' "        ${BLUE}u${ALL_OFF}: unmount"
     printf '\n\n'
-    printf '%s' " ${BLUE}[Enter]${ALL_OFF}: refresh"
-    printf '%s' "           ${BLUE}a${ALL_OFF}: unmount all"
+    printf '%s' " ${BLUE}t${ALL_OFF}: toggle internal"
+    printf '%s' "         ${BLUE}a${ALL_OFF}: unmount all"
     printf '%s' "        ${BLUE}q${ALL_OFF}: quit"
     printf '%s' "        ${BLUE}?${ALL_OFF}: help"
     printf '\n\n'
@@ -829,6 +829,7 @@ select_action() {
         fi
     else
         case "$action" in
+            "t") show_internal=$(( 1 - show_internal )) ;;
             "a")
                 if (( ! ${#mounted[*]} )); then
                     error "No devices mounted."
